@@ -12,6 +12,10 @@ const formElement = document.querySelector(".to-do__form");
 const inputElement = document.querySelector(".to-do__input");
 
 function loadTasks() {
+	const savedTasks = localStorage.getItem("tasks")
+	if (savedTasks) {
+		return JSON.parse(savedTasks);
+	}
 	return items
 }
 
@@ -29,12 +33,26 @@ function createItem(item) {
 }
 
 function getTasksFromDOM() {
-
+	const itemsNamesElements = document.querySelectorAll(".to-do__item-text")
+	const tasks = []
+	itemsNamesElements.forEach(itemName => {
+		tasks.push(itemName.textContent)
+	})
+	return tasks
 }
 
 function saveTasks(tasks) {
-
+	localStorage.setItem("tasks", JSON.stringify(tasks))
 }
+
+formElement.addEventListener("submit", (e) => {
+	e.preventDefault()
+	const taskText = inputElement.value
+	listElement.prepend(createItem(taskText))
+	items = getTasksFromDOM()
+	saveTasks(items)
+	inputElement.value = ""
+})
 
 items = loadTasks()
 items.forEach(item => {
