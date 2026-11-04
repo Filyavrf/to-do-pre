@@ -29,6 +29,20 @@ function createItem(item) {
 
 	textElement.textContent = item
 
+	deleteButton.addEventListener("click", () => {
+		clone.remove()
+		const items = getTasksFromDOM()
+		saveTasks(items)
+	})
+
+	duplicateButton.addEventListener("click", () => {
+		const itemName = textElement.textContent
+		const newItem = createItem(itemName)
+		listElement.prepend(newItem)
+		const items = getTasksFromDOM()
+		saveTasks(items)
+	})
+
 	return clone
 }
 
